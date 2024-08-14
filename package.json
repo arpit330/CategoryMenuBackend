@@ -1,0 +1,17 @@
+{
+  "name": "categorymenubackend",
+  "version": "1.0.0",
+  "description": "Backend for Category Menu for items management",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arpit Sahu",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.3"
+  }
+}
