@@ -1,7 +1,0 @@
-// prettier-ignore
-try {
-    // code
-}
-catch (error) {
-    // error handling
-}
