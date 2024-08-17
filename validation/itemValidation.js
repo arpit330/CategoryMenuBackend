@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-// Item schema
+// validate incoming Item schema
 const itemSchema = Joi.object({
   name: Joi.string().required(),
   image: Joi.string().uri().optional(),

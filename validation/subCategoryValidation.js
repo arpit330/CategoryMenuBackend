@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-// Subcategory schema
+// validate incoming Subcategory schema
 const subCategorySchema = Joi.object({
   name: Joi.string().required(),
   image: Joi.string().uri().optional(),

@@ -1,6 +1,6 @@
 const Item = require("../models/ItemModel");
 
-exports.createItem = async (req, res) => {
+async function createItem(req, res) {
   try {
     const item = new Item({
       ...req.body,
@@ -11,11 +11,11 @@ exports.createItem = async (req, res) => {
     await item.save();
     res.status(201).json(item);
   } catch (error) {
-    res.status(500).json({ error: `Failed to create item, ${error.message}` });
+    res.status(500).send({ error: err.message });
   }
-};
+}
 
-exports.getAllItems = async (req, res) => {
+async function getAllItems(req, res) {
   try {
     const { categoryId, subcategoryId } = req.params;
 
@@ -36,11 +36,11 @@ exports.getAllItems = async (req, res) => {
 
     res.status(200).json(items);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch items" });
+    res.status(500).send({ error: err.message });
   }
-};
+}
 
-exports.getItemById = async (req, res) => {
+async function getItemById(req, res) {
   try {
     const item = await Item.findById(req.params.id);
 
@@ -50,11 +50,11 @@ exports.getItemById = async (req, res) => {
 
     res.status(200).json(item);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch item" });
+    res.status(500).send({ error: err.message });
   }
-};
+}
 
-exports.updateItem = async (req, res) => {
+async function updateItem(req, res) {
   try {
     const item = await Item.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -66,16 +66,26 @@ exports.updateItem = async (req, res) => {
 
     res.status(200).json(item);
   } catch (error) {
-    res.status(500).json({ error: `Failed to create item, ${error.message}`});
+    res.status(500).send({ error: err.message });
   }
-};
+}
 
-exports.searchItemsByName = async (req, res) => {
+async function searchItemsByName(req, res) {
   try {
+
+    // Creating a regEx to get all the Items with given searchQuery in their name
     const items = await Item.find({ name: new RegExp(req.query.name, "i") });
 
     res.status(200).json(items);
   } catch (error) {
-    res.status(500).json({ error: `Failed to create item, ${error.message}` });
+    res.status(500).send({ error: err.message });
   }
+}
+
+module.exports = {
+  createItem,
+  getAllItems,
+  getItemById,
+  updateItem,
+  searchItemsByName,
 };

@@ -1,3 +1,9 @@
+/**
+ * Function to validate req body with provided request schema
+ * 
+ * @param {Object} schema 
+ * @returns 
+ */
 const validate = (schema) => (req, res, next) => {
   const { error } = schema.validate(req.body, { abortEarly: false });
 

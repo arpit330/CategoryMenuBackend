@@ -6,18 +6,17 @@ const express = require("express"),
   CategoryRoutes = require("./routes/CategoryRoutes"),
   SubCategoryRoutes = require("./routes/SubCategoryRoutes"),
   ItemRoutes = require("./routes/ItemRoutes"),
-  rateLimiter = require('./middleware/ratelimit');
-
+  rateLimiter = require("./middleware/ratelimit");
 
 const app = express(),
   PORT = process.env.PORT || 3000;
 
-// Connect to database
+// Connect to MongoDB
 connectDB();
 
 rateLimiter(app);
 
-// Middleware
+// Apply middleware
 app.use(cors());
 app.use(express.json());
 
@@ -28,10 +27,7 @@ app.use(
   "/categories/:categoryId/subcategories/:subcategoryId/items",
   ItemRoutes
 );
-app.use(
-  "/categories/:categoryId/items",
-  ItemRoutes
-);
+app.use("/categories/:categoryId/items", ItemRoutes);
 
 // Start server
 app.listen(PORT, () => {

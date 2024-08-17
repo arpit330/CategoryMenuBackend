@@ -1,6 +1,6 @@
 const SubCategory = require("../models/SubCategoryModel");
 
-exports.createSubCategory = async (req, res) => {
+async function createSubCategory(req, res) {
   try {
     const subCategory = new SubCategory({
       ...req.body,
@@ -9,22 +9,23 @@ exports.createSubCategory = async (req, res) => {
 
     await subCategory.save();
     res.status(201).json(subCategory);
-  } 
-  catch (error) {
+  } catch (error) {
     if (err.code === 11000) {
       // Handle duplicate key error
-      res.status(400).send({ error: 'Subcategory already exists within this category' });
-    } 
-    else {
+      res
+        .status(400)
+        .send({ error: "Subcategory already exists within this category" });
+    } else {
       // Handle other errors
       res.status(500).send({ error: err.message });
     }
   }
-};
+}
 
-exports.getAllSubCategories = async (req, res) => {
+async function getAllSubCategories(req, res) {
   try {
 
+    // find category by name if name is not empty
     if (req?.query?.name) {
       const categories = await SubCategory.find({
         categoryId: req.params.categoryId,
@@ -40,28 +41,26 @@ exports.getAllSubCategories = async (req, res) => {
     });
 
     res.status(200).json(subCategories);
-  } 
-  catch (error) {
-    res.status(500).json({ error: "Failed to fetch sub-categories" });
+  } catch (error) {
+    res.status(500).send({ error: err.message });
   }
-};
+}
 
-exports.getSubCategoryById = async (req, res) => {
+async function getSubCategoryById(req, res) {
   try {
     const subCategory = await SubCategory.findById(req.params.id);
 
     if (!subCategory) {
-      return res.status(404).json({ error: "Sub-category not found" });
+      return res.status(404).send({ error: err.message });
     }
 
     res.status(200).json(subCategory);
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ error: "Failed to fetch sub-category" });
   }
-};
+}
 
-exports.updateSubCategory = async (req, res) => {
+async function updateSubCategory(req, res) {
   try {
     const subCategory = await SubCategory.findByIdAndUpdate(
       req.params.id,
@@ -74,8 +73,14 @@ exports.updateSubCategory = async (req, res) => {
     }
 
     res.status(200).json(subCategory);
-  } 
-  catch (error) {
-    res.status(500).json({ error: "Failed to update sub-category" });
+  } catch (error) {
+    res.status(500).send({ error: err.message });
   }
+}
+
+module.exports = {
+  createSubCategory,
+  getAllSubCategories,
+  getSubCategoryById,
+  updateSubCategory,
 };

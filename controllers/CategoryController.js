@@ -1,6 +1,6 @@
 const Category = require("../models/CategoryModel");
 
-exports.createCategory = async (req, res) => {
+async function createCategory(req, res) {
   try {
     const category = new Category(req.body);
 
@@ -17,17 +17,16 @@ exports.createCategory = async (req, res) => {
       res.status(500).send({ error: err.message });
     }
   }
-};
+}
 
-exports.getCategories = async (req, res) => {
+async function getCategories(req, res) {
   try {
     if (req?.query?.name) {
       const categories = await Category.find({
         name: new RegExp(req.query.name, "i"),
       });
 
-      res.status(200).json(categories);
-      return;
+      return res.status(200).json(categories);
     }
 
     const categories = await Category.find();
@@ -36,9 +35,9 @@ exports.getCategories = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch categories" });
   }
-};
+}
 
-exports.getCategoryById = async (req, res) => {
+async function getCategoryById(req, res) {
   try {
     const category = await Category.findById(req.params.id);
 
@@ -50,9 +49,9 @@ exports.getCategoryById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch category" });
   }
-};
+}
 
-exports.updateCategory = async (req, res) => {
+async function updateCategory(req, res) {
   try {
     const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -64,6 +63,13 @@ exports.updateCategory = async (req, res) => {
 
     res.status(200).json(category);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update category" });
+    res.status(500).send({ error: err.message });
   }
+}
+
+module.exports = {
+  createCategory,
+  getCategories,
+  getCategoryById,
+  updateCategory,
 };

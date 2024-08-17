@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-// validate imcoming Category schema
+// validate incoming Category schema
 const categorySchema = Joi.object({
   name: Joi.string().required(),
   image: Joi.string().uri().optional(),
