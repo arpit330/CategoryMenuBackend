@@ -1,7 +1,10 @@
 const Item = require("../models/ItemModel");
 
+// Function to create a new item
 async function createItem(req, res) {
   try {
+    // Create a new Item instance with the data from the request body
+    // and associate it with the categoryId and subcategoryId from the request parameters
     const item = new Item({
       ...req.body,
       categoryId: req.params.categoryId,
@@ -9,12 +12,15 @@ async function createItem(req, res) {
     });
 
     await item.save();
+
     res.status(201).json(item);
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).send({ error: err.message });
   }
 }
 
+// Function to get all items, optionally filtered by category and subcategory
 async function getAllItems(req, res) {
   try {
     const { categoryId, subcategoryId } = req.params;
@@ -28,18 +34,21 @@ async function getAllItems(req, res) {
       if (!req?.query?.fetchAll) {
         query.subcategoryId = null;
       }
-    } else {
+    } 
+    else {
       query.subcategoryId = subcategoryId;
     }
 
     const items = await Item.find(query);
 
     res.status(200).json(items);
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).send({ error: err.message });
   }
 }
 
+// Function to get a single item by its ID
 async function getItemById(req, res) {
   try {
     const item = await Item.findById(req.params.id);
@@ -49,11 +58,13 @@ async function getItemById(req, res) {
     }
 
     res.status(200).json(item);
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).send({ error: err.message });
   }
 }
 
+// Function to update an existing item by its ID
 async function updateItem(req, res) {
   try {
     const item = await Item.findByIdAndUpdate(req.params.id, req.body, {
@@ -65,11 +76,13 @@ async function updateItem(req, res) {
     }
 
     res.status(200).json(item);
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).send({ error: err.message });
   }
 }
 
+// Function to search items by their name
 async function searchItemsByName(req, res) {
   try {
 
@@ -77,7 +90,8 @@ async function searchItemsByName(req, res) {
     const items = await Item.find({ name: new RegExp(req.query.name, "i") });
 
     res.status(200).json(items);
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).send({ error: err.message });
   }
 }
